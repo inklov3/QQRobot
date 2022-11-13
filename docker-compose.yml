@@ -1,0 +1,33 @@
+version: '2.10'
+networks:
+  qqbotNet:
+    ipam:
+      config:
+      - subnet: 172.50.1.0/24
+
+services:
+  qqbot:
+    container_name: qqbot01
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+    image: yulu/bot
+    networks:
+      qqbotNet:
+        ipv4_address: 172.50.1.2
+    command: poetry run python /bot/bot.py
+
+  go-cqhttp:
+    build:
+      context: ./go-cqhttp
+      dockerfile: Dockerfile
+    container_name: go-cqhttp01
+    image: yulu/go-cqhttp
+    volumes:
+      - "./qbot/config.yml:/go-cqhttp/config.yml"
+      - "./qbot/logs:/go-cqhttp/logs"
+      - "./qbot/session.token:/go-cqhttp/logs"
+    networks:
+      qqbotNet:
+        ipv4_address: 172.50.1.3
+    command: ./go-cqhttp
