@@ -1,0 +1,5 @@
+# QQRobot快速构造
+通过docker-compose进行快速构造
+# 结构
+由 nonebot + go-cqhttp 构成
+由 poetry 构建环境
